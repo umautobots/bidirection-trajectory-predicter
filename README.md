@@ -12,12 +12,13 @@ Our BiTraP-GMM decoder architecture:
 <img src="figures/bitrap_gmm.png" width="400">
 
 ## Dependencies
-
 Our code was implemented using python and pytorch and tested on a desktop computer with Intel Xeon 2.10GHz CPU, NVIDIA TITAN X GPU and 128 GB memory.
 
 * NVIDIA driver >= 418
 * Python >= 3.6
 * pytorch == 1.4.1 with GPU support (CUDA 10.1 & cuDNN 7)
+
+One can also use docker with `docker/Dockerfile`.
 
 ## Training
 Users can train the BiTraP models on JAAD, PIE or ETH-UCY dataset easily by runing the following command:
