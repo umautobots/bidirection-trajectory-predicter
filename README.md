@@ -5,11 +5,11 @@ This repo contains the code for our paper:[BiTraP: Bi-directional Pedestrian Tra
 
 Our BiTraP-NP network architecture:
 
-<img src="figures/bitrap_np.png" width="600">
+<img src="figures/bitrap_np.png" width="800">
 
 Our BiTraP-GMM decoder architecture:
 
-<img src="figures/bitrap_gmm.png" width="400">
+<img src="figures/bitrap_gmm.png" width="600">
 
 ## Dependencies
 Our code was implemented using python and pytorch and tested on a desktop computer with Intel Xeon 2.10GHz CPU, NVIDIA TITAN X GPU and 128 GB memory.
