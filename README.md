@@ -1,12 +1,14 @@
 # BiTraP: Bi-directional Pedestrian Trajectory Prediction with Multi-modal Goal Estimation
 Yu Yao, Ella Atkins, Matthew Johnson-Roberson, Ram Vasudevan and Xiaoxiao Du
 
-This repo contains the code for our [paper](https://arxiv.org/abs/2007.14558) on bi-directional pedestrian trajectory prediction. 
+This repo contains the code for our paper:[BiTraP: Bi-directional Pedestrian Trajectory Prediction with Multi-modal Goal Estimation](https://arxiv.org/abs/2007.14558).
 
 Our BiTraP-NP network architecture:
-<img src="figures/bitrap_np.png" width="400">
+
+<img src="figures/bitrap_np.png" width="600">
 
 Our BiTraP-GMM decoder architecture:
+
 <img src="figures/bitrap_gmm.png" width="400">
 
 ## Dependencies
@@ -22,32 +24,32 @@ Users can train the BiTraP models on JAAD, PIE or ETH-UCY dataset easily by runi
 ```
 python tools/train.py --config_file **DIR_TO_THE_YML_FILE** 
 ```
-To train on JAAD or PIE dataset, the users need to download the dataset from their original webpage and follow their directions to extract pedestrian trajectory files ('.pkl'). The trajectories should locate at the `DATASET.TRAJECTORY_PATH` in the configuration file.
+To train on [JAAD](http://data.nvision2.eecs.yorku.ca/JAAD_dataset/) or [PIE](http://data.nvision2.eecs.yorku.ca/PIE_dataset/) dataset, the users need to download the dataset from their original webpage and follow their directions to extract pedestrian trajectory files ('.pkl'). The trajectories should locate at the `DATASET.TRAJECTORY_PATH` in the configuration file.
 
-To train on ETH-UCY dataset, the users can download the trajectory files ('.pkl') from the social-GAN repo and put them at the `DATASET.TRAJECTORY_PATH` in the configuration file.
+To train on ETH-UCY dataset, the users can download the trajectory files ('.pkl') from the [social-GAN](https://github.com/agrimgupta92/sgan) repo and put them at the `DATASET.TRAJECTORY_PATH` in the configuration file.
 
 ## Inference 
 The checkpoints of our models trained on JAAD, PIE and ETH-UCY can be downloaded [here](https://drive.google.com/drive/folders/1MF-E6Td2BRizNrvIFcfsOl0LV2_BDQXB?usp=sharing).
 
 ### Bounding box trajectory prediction on JAAD and PIE
-Test BiTraP-NP on PIE
-```python tools/test.py --config_file configs/gaussian_NP_PIE.yml CKPT_DIR **DIR_TO_CKPT**```
+We predict the bounding box coordinate trajectory for first-person (ego-centric) view JAAD and PIE datasets.
+Test on PIE dataset:
+```
+python tools/test.py --config_file configs/bitrap_np_PIE.yml CKPT_DIR **DIR_TO_CKPT**
+python tools/test.py --config_file configs/bitrap_gmm_PIE.yml CKPT_DIR **DIR_TO_CKPT**
+```
 
-Test BiTraP-GMM on PIE
-```python tools/test.py --config_file configs/Cat_GMM_PIE.yml CKPT_DIR **DIR_TO_CKPT**```
-
-Test BiTraP-NP on JAAD
-```python tools/test.py --config_file configs/gaussian_NP_JAAD.yml CKPT_DIR **DIR_TO_CKPT**```
-
-Test BiTraP-GMM on JAAD
-```python tools/test.py --config_file configs/Cat_GMM_JAAD.yml CKPT_DIR **DIR_TO_CKPT**```
-
+Test on JAAD dataset:
+```
+python tools/test.py --config_file configs/bitrap_np_JAAD.yml CKPT_DIR **DIR_TO_CKPT**
+python tools/test.py --config_file configs/bitrap_gmm_JAAD.yml CKPT_DIR **DIR_TO_CKPT**
+```
 ### Point trajectory prediction on ETH-UCY
-Test BiTraP-NP on JAAD
-```python tools/test.py --config_file configs/gaussian_NP_ETH.yml DATASET.NAME **NAME_OF_DATASET** CKPT_DIR **DIR_TO_CKPT**```
-
-Test BiTraP-GMM on JAAD
-```python tools/test.py --config_file configs/Cat_GMM_ETH.yml DATASET.NAME **NAME_OF_DATASET** CKPT_DIR **DIR_TO_CKPT**```
+We predict the point coordinate trajectory for bird's-eye view ETH-UCY datasets.
+```
+python tools/test.py --config_file configs/bitrap_np_ETH.yml DATASET.NAME **NAME_OF_DATASET** CKPT_DIR **DIR_TO_CKPT**
+python tools/test.py --config_file configs/bitrap_gmm_ETH.yml DATASET.NAME **NAME_OF_DATASET** CKPT_DIR **DIR_TO_CKPT**
+```
 
 ## Citation
 
