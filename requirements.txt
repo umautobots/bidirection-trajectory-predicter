@@ -1,0 +1,10 @@
+pytorch==1.4.1
+matplotlib
+tqdm
+yacs
+Pillow
+tensorboardx
+wandb
+scikit-learn
+opencv-python
+coloredlogs

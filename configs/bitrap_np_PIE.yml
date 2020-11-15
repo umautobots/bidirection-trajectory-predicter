@@ -1,0 +1,44 @@
+PROJECT: 'bitrap_np_pie'
+CKPT_DIR: 'checkpoints/PIE_checkpoints/goal_cvae_checkpoints/' 
+OUT_DIR: 'outputs/PIE_outputs/goal_cvae_outputs'
+DEVICE: 'cuda'
+METHOD: 'BiTraPNP'
+VISUALIZE: True
+MODEL:
+  IMG_SIZE: (256,256)
+  BEST_OF_MANY: True
+  K: 20
+  LATENT_DIST: 'gaussian' 
+  LATENT_DIM: 32 
+
+  PRED_LEN: 45 # input and pred_len is defined in 30FPS
+  GLOBAL_EMBED_SIZE: 256
+  GLOBAL_HIDDEN_SIZE:  256
+  GLOBAL_INPUT_DIM: 4
+  DROPOUT: 0.0
+  
+  ENC_CONCAT_TYPE: 'average'
+  INPUT_EMBED_SIZE: 256
+  FLOW_EMBED_SIZE: 256
+  FLOW_HIDDEN_SIZE: 256
+  ENC_HIDDEN_SIZE: 256
+  DEC_INPUT_SIZE: 256
+  DEC_HIDDEN_SIZE: 256
+  DEC_OUTPUT_DIM: 4
+DATASET:
+  NAME: 'PIE'
+  ROOT: 'data/PIE_dataset/'
+  TRAJECTORY_PATH: 'data/PIE_dataset/trajectories/'
+  BBOX_TYPE: 'cxcywh' # bbox is in cxcywh format
+  NORMALIZE: 'zero-one' 
+  MIN_BBOX: [0,0,0,0] # the min of cxcywh or x1x2y1y2
+  MAX_BBOX: [1920, 1080, 1920, 1080] # the max of cxcywh or x1x2y1y2
+DATALOADER:
+  NUM_WORKERS: 24
+SOLVER:
+  MAX_EPOCH: 50
+  BATCH_SIZE: 128
+  LR: 0.001
+  scheduler: 'plateau'
+TEST:
+  BATCH_SIZE: 1024

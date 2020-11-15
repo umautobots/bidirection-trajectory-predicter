@@ -1,0 +1,12 @@
+__pycache__
+wandb/
+data
+.ipynb_checkpoints/
+pretrained_models/
+*.log
+*.swp
+*.pkl
+checkpoints
+outputs
+ipython_notebook/gaussian_NP_PIE_viz/
+models

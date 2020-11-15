@@ -1,0 +1,3 @@
+[submodule "sim_traj"]
+	path = sim_traj
+	url = git@github.com:MoonBlvd/sim_traj.git

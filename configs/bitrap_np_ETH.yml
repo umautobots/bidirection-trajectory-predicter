@@ -1,0 +1,41 @@
+PROJECT: 'bitrap_np_eth'
+VISUALIZE: True
+CKPT_DIR: 'checkpoints/ETH_UCY_checkpoints/goal_cvae_checkpoints/' 
+OUT_DIR: 'outputs/ETH_UCY_outputs/goal_cvae_outputs'
+DEVICE: 'cuda'
+METHOD: 'BiTraPNP'
+MODEL:
+  IMG_SIZE: (256,256)
+  BEST_OF_MANY: True
+  K: 20
+  LATENT_DIST: 'gaussian' 
+  LATENT_DIM: 32 
+
+  INPUT_LEN: 8
+  PRED_LEN: 12 # input and pred_len is defined in 30FPS
+  GLOBAL_INPUT_DIM: 6
+  DEC_OUTPUT_DIM: 2 
+  DROPOUT: 0.25
+  
+  WITH_FLOW: False
+  ENC_CONCAT_TYPE: 'average'
+  INPUT_EMBED_SIZE: 256
+  FLOW_EMBED_SIZE: 256
+  FLOW_HIDDEN_SIZE: 256
+  ENC_HIDDEN_SIZE: 256
+  DEC_INPUT_SIZE: 256
+  DEC_HIDDEN_SIZE: 256
+DATASET:
+  NAME: 'eth'
+  ETH_CONFIG: 'configs/ETH_UCY.json'
+  ROOT: 'data/ETH_UCY_trajectron/'
+  TRAJECTORY_PATH: 'data/ETH_UCY_trajectron/trajectories/'
+DATALOADER:
+  NUM_WORKERS: 24
+SOLVER:
+  # TRAIN_MODULE: 'FOL'
+  MAX_EPOCH: 50
+  BATCH_SIZE: 128
+  LR: 0.001
+  scheduler: 'exp'
+  GAMMA: 0.999

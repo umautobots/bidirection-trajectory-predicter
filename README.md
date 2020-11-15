@@ -1,25 +1,62 @@
 # BiTraP: Bi-directional Pedestrian Trajectory Prediction with Multi-modal Goal Estimation
 Yu Yao, Ella Atkins, Matthew Johnson-Roberson, Ram Vasudevan and Xiaoxiao Du
 
+This repo contains the code for our [paper](https://arxiv.org/abs/2007.14558) on bi-directional pedestrian trajectory prediction. 
+
+Our BiTraP-NP network architecture:
+<img src="figures/bitrap_np.png" width="400">
+
+Our BiTraP-GMM decoder architecture:
+<img src="figures/bitrap_gmm.png" width="400">
+
+## Dependencies
+
+Our code was implemented using python and pytorch and tested on a desktop computer with Intel Xeon 2.10GHz CPU, NVIDIA TITAN X GPU and 128 GB memory.
+
+* NVIDIA driver >= 418
+* Python >= 3.6
+* pytorch == 1.4.1 with GPU support (CUDA 10.1 & cuDNN 7)
 
 ## Training
+Users can train the BiTraP models on JAAD, PIE or ETH-UCY dataset easily by runing the following command:
+```
+python tools/train.py --config_file **DIR_TO_THE_YML_FILE** 
+```
+To train on JAAD or PIE dataset, the users need to download the dataset from their original webpage and follow their directions to extract pedestrian trajectory files ('.pkl'). The trajectories should locate at the `DATASET.TRAJECTORY_PATH` in the configuration file.
+
+To train on ETH-UCY dataset, the users can download the trajectory files ('.pkl') from the social-GAN repo and put them at the `DATASET.TRAJECTORY_PATH` in the configuration file.
+
+## Inference 
+The checkpoints of our models trained on JAAD, PIE and ETH-UCY can be downloaded [here](https://drive.google.com/drive/folders/1MF-E6Td2BRizNrvIFcfsOl0LV2_BDQXB?usp=sharing).
 
 ### Bounding box trajectory prediction on JAAD and PIE
 Test BiTraP-NP on PIE
-`python tools/test.py --config_file configs/gaussian_NP_PIE.yml CKPT_DIR **DIR_TO_CKPT**`
+```python tools/test.py --config_file configs/gaussian_NP_PIE.yml CKPT_DIR **DIR_TO_CKPT**```
 
 Test BiTraP-GMM on PIE
-`python tools/test.py --config_file configs/Cat_GMM_PIE.yml CKPT_DIR **DIR_TO_CKPT**`
+```python tools/test.py --config_file configs/Cat_GMM_PIE.yml CKPT_DIR **DIR_TO_CKPT**```
 
 Test BiTraP-NP on JAAD
-`python tools/test.py --config_file configs/gaussian_NP_JAAD.yml CKPT_DIR **DIR_TO_CKPT**`
+```python tools/test.py --config_file configs/gaussian_NP_JAAD.yml CKPT_DIR **DIR_TO_CKPT**```
 
 Test BiTraP-GMM on JAAD
-`python tools/test.py --config_file configs/Cat_GMM_JAAD.yml CKPT_DIR **DIR_TO_CKPT**`
+```python tools/test.py --config_file configs/Cat_GMM_JAAD.yml CKPT_DIR **DIR_TO_CKPT**```
 
 ### Point trajectory prediction on ETH-UCY
 Test BiTraP-NP on JAAD
-`python tools/test.py --config_file configs/gaussian_NP_ETH.yml DATASET.NAME **NAME_OF_DATASET** CKPT_DIR **DIR_TO_CKPT**`
+```python tools/test.py --config_file configs/gaussian_NP_ETH.yml DATASET.NAME **NAME_OF_DATASET** CKPT_DIR **DIR_TO_CKPT**```
 
 Test BiTraP-GMM on JAAD
-`python tools/test.py --config_file configs/Cat_GMM_ETH.yml DATASET.NAME **NAME_OF_DATASET** CKPT_DIR **DIR_TO_CKPT**`
+```python tools/test.py --config_file configs/Cat_GMM_ETH.yml DATASET.NAME **NAME_OF_DATASET** CKPT_DIR **DIR_TO_CKPT**```
+
+## Citation
+
+If you found the repo is useful, please feel free to cite our papers:
+```
+@article{yao2020bitrap,
+  title={BiTraP: Bi-directional Pedestrian Trajectory Prediction with Multi-modal Goal Estimation},
+  author={Yao, Yu and Atkins, Ella and Johnson-Roberson, Matthew and Vasudevan, Ram and Du, Xiaoxiao},
+  journal={arXiv preprint arXiv:2007.14558},
+  year={2020}
+}
+```

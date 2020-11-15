@@ -1,0 +1,51 @@
+PROJECT: 'goal_cvae_JAAD_PIE'
+VISUALIZE: True
+CKPT_DIR: 'checkpoints/PIE_checkpoints/goal_cvae_checkpoints/' 
+OUT_DIR: 'outputs/PIE_outputs/goal_cvae_outputs'
+DEVICE: 'cuda'
+METHOD: 'GOALCVAE'
+MODEL:
+  PRED_GLOBAL: False # we predict residual and shift to global later.
+  WITH_GOAL: False
+  IMG_SIZE: (256,256)
+  GOAL_MAP_SIZE: (128, 128)
+  UNIT_PRIOR: False
+  BEST_OF_MANY: True
+  K: 20
+  LATENT_DIST: 'categorical' 
+  LATENT_DIM: 25
+  DEC_WITH_Z: True
+
+  dt: 0.03333
+  PRED_LEN: 45 # input and pred_len is defined in 30FPS
+  GLOBAL_INPUT_DIM: 4
+  DROPOUT: 0.25
+  
+  WITH_FLOW: False
+  WITH_EGO: False
+  ENC_CONCAT_TYPE: 'average'
+  INPUT_EMBED_SIZE: 256
+  FLOW_EMBED_SIZE: 256
+  FLOW_HIDDEN_SIZE: 256
+  ENC_HIDDEN_SIZE: 256
+  DEC_INPUT_SIZE: 256
+  DEC_HIDDEN_SIZE: 256
+  DEC_OUTPUT_DIM: 4
+DATASET:
+  NAME: 'PIE'
+  ROOT: 'data/PIE_dataset/'
+  TRAJECTORY_PATH: 'data/PIE_dataset/trajectories/'
+  BBOX_TYPE: 'cxcywh' #'x1y1x2y2'
+  NORMALIZE: 'plus-minus-one'
+  MIN_BBOX: [500, 825, 150, 250] #[0,0,0,0] # the min of cxcywh or x1x2y1y2, [2, 655, 3, 10]
+  MAX_BBOX: [1000, 875, 250, 400] #[1920, 1080, 1920, 1080] # the max of cxcywh or x1x2y1y2, [1918, 947, 376, 713]
+DATALOADER:
+  NUM_WORKERS: 24
+SOLVER:
+  MAX_EPOCH: 50
+  BATCH_SIZE: 128
+  LR: 0.001
+  scheduler: 'exp'
+TEST:
+  BATCH_SIZE: 1024
+  KDE_BATCH_SIZE: 24
