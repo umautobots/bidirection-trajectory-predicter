@@ -6,9 +6,7 @@ TODO: convert to our own dataset format later
 '''
 import os
 import sys
-sys.path.append('/home/brianyao/Documents/Trajectron-plus-plus')
-sys.path.append('/home/brianyao/Documents/Trajectron-plus-plus/trajectron')
-from trajectron.model.dataset.dataset import NodeTypeDataset
+from .preprocessing import get_node_timestep_data
 import numpy as np
 import torch
 from torch.utils import data
@@ -84,6 +82,51 @@ class ETHUCYDataset(data.Dataset):
         ret['scene_name'] = scene_name
         ret['timestep'] = timestep
         return ret
+
+class NodeTypeDataset(data.Dataset):
+    '''
+    from Trajectron++: https://github.com/StanfordASL/Trajectron-plus-plus
+    '''
+    def __init__(self, env, node_type, state, pred_state, node_freq_mult,
+                 scene_freq_mult, hyperparams, augment=False, **kwargs):
+        self.env = env
+        self.state = state
+        self.pred_state = pred_state
+        self.hyperparams = hyperparams
+        self.max_ht = self.hyperparams['maximum_history_length']
+        self.max_ft = kwargs['min_future_timesteps']
+
+        self.augment = augment
+
+        self.node_type = node_type
+        self.index = self.index_env(node_freq_mult, scene_freq_mult, **kwargs)
+        self.len = len(self.index)
+        self.edge_types = [edge_type for edge_type in env.get_edge_types() if edge_type[0] is node_type]
+
+    def index_env(self, node_freq_mult, scene_freq_mult, **kwargs):
+        index = list()
+        
+        for scene in self.env.scenes:
+            present_node_dict = scene.present_nodes(np.arange(0, scene.timesteps), type=self.node_type, **kwargs)
+            for t, nodes in present_node_dict.items():
+                for node in nodes:
+                    index += [(scene, t, node)] *\
+                             (scene.frequency_multiplier if scene_freq_mult else 1) *\
+                             (node.frequency_multiplier if node_freq_mult else 1)
+
+        return index
+
+    def __len__(self):
+        return self.len
+
+    def __getitem__(self, i):
+        (scene, t, node) = self.index[i]
+
+        if self.augment:
+            scene = scene.augment()
+            node = scene.get_node_by_id(node.id)
+        return get_node_timestep_data(self.env, scene, t, node, self.state, self.pred_state,
+                                      self.edge_types, self.max_ht, self.max_ft, self.hyperparams)
 
 if __name__=='__main__':
     dataset = ETHUCYDataset(hyperparams)

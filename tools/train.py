@@ -13,11 +13,11 @@ from torch.nn import functional as F
 import pickle as pkl
 from datasets.build import make_dataloader
 
-from lib.modeling.build import make_model
+from bitrap.modeling.build import make_model
 
-from lib.engine import build_engine
-from lib.utils.scheduler import ParamScheduler, sigmoid_anneal
-from lib.utils.logger import Logger
+from bitrap.engine import build_engine
+from bitrap.utils.scheduler import ParamScheduler, sigmoid_anneal
+from bitrap.utils.logger import Logger
 import logging
 
 import argparse
@@ -56,7 +56,7 @@ def main():
     # build model, optimizer and scheduler
     model = make_model(cfg)
     model = model.to(cfg.DEVICE)
-    optimizer = build_optimizer(cfg, model, mode=cfg.SOLVER.TRAIN_MODULE)
+    optimizer = build_optimizer(cfg, model)
     print('optimizer built!')
     # NOTE: add separate optimizers to train single object predictor and interaction predictor
     
@@ -126,7 +126,6 @@ def main():
                                                             min_lr=1e-07, verbose=1)
     else:
         lr_scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[25, 40], gamma=0.2)
-    early_stop = EarlyStopping(min_delta=0.1, patience=5, verbose=1)
                                                         
     print('Schedulers built!')
 

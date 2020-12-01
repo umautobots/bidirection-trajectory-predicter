@@ -226,13 +226,9 @@ class BiTraPNP(nn.Module):
             loss_goal, loss_traj = cvae_loss(pred_goal, 
                                             pred_traj, 
                                             target_y, 
-                                            gmm=None, 
-                                            best_of_many=self.cfg.BEST_OF_MANY,
-                                            pseudo_nll=self.cfg.PSEUDO_NLL) 
+                                            best_of_many=self.cfg.BEST_OF_MANY
+                                            ) 
             loss_dict =  {'loss_goal':loss_goal, 'loss_traj':loss_traj, 'loss_kld':KLD}
-            if self.cfg.LATENT_DIST == 'categorical':
-                loss_dict['loss_goal'] = loss_goal if self.cfg.PSEUDO_NLL else goal_NLL
-                loss_dict['mutual_info_p'] = mutual_info_p
         else:
             # test
             loss_dict = {}
