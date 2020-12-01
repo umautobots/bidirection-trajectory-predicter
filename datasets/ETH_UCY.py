@@ -12,7 +12,6 @@ import torch
 from torch.utils import data
 import dill
 import json
-import pdb
 
 class ETHUCYDataset(data.Dataset):
     def __init__(self, cfg, split):
@@ -130,5 +129,3 @@ class NodeTypeDataset(data.Dataset):
 
 if __name__=='__main__':
     dataset = ETHUCYDataset(hyperparams)
-
-    pdb.set_trace()

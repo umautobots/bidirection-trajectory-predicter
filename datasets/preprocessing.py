@@ -6,9 +6,8 @@ import numpy as np
 import collections.abc
 from torch.utils.data._utils.collate import default_collate
 import dill
-import pdb
 container_abcs = collections.abc
-import pdb
+
 
 def collate(batch):
     if len(batch) == 0:
@@ -116,7 +115,6 @@ def get_node_timestep_data(env, scene, t, node, state, pred_state,
         neighbors_data_lower_upper = dict()
         neighbors_edge_value = dict()
         neighbors_future = dict()
-        # pdb.set_trace()
         for edge_type in edge_types:
             neighbors_data_st[edge_type] = list()
             neighbors_data_lower_upper[edge_type] = list()
@@ -136,25 +134,17 @@ def get_node_timestep_data(env, scene, t, node, state, pred_state,
                 neighbor_future_np, (_, _) = connected_node.get(np.array([t+1, t+max_ft]),
                                                         state[connected_node.type],
                                                         padding=np.nan)
-                # -----------------
-                # NOTE: original Trajectron++ :Make State relative to node where neighbor and node have same state
                 _, std = env.get_standardize_params(state[connected_node.type], node_type=connected_node.type)
                 std[0:2] = env.attention_radius[edge_type] #3 #
                 equal_dims = np.min((neighbor_state_np.shape[-1], x.shape[-1]))
                 rel_state = np.zeros_like(neighbor_state_np)
                 rel_state[:, ..., :equal_dims] = x[-1, ..., :equal_dims]
-                # -------------------
-                # NOTE: July 1, our experiment is to predict neighbors, thus standardize it wrt its own pos
-                # rel_state = np.zeros_like(neighbor_state_np[0])
-                # rel_state[0:2] = np.array(neighbor_state_np)[-1, 0:2]
-                # --------------------
-                # pdb.set_trace()
+                
                 neighbor_state_np_st = env.standardize(neighbor_state_np,
                                                        state[connected_node.type],
                                                        node_type=connected_node.type,
                                                        mean=rel_state,
                                                        std=std)
-                # pdb.set_trace()
                 neighbor_state = torch.tensor(neighbor_state_np, dtype=torch.float)
                 neighbor_state_st = torch.tensor(neighbor_state_np_st, dtype=torch.float)
                 neighbor_future = torch.tensor(neighbor_future_np, dtype=torch.float)[..., :2]# only use pos of future
