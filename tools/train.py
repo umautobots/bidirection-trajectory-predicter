@@ -3,17 +3,17 @@
 import pdb
 import os
 import sys
-sys.path.append(os.path.realpath('..'))
-pdb.set_trace()
+sys.path.append(os.path.realpath('.'))
 import numpy as np
 import torch
 from torch import nn, optim
 from torch.nn import functional as F
 
 import pickle as pkl
-from datasets.build import make_dataloader
+# sys.path.remove('/home/brianyao/Documents/intention2021icra')
+from datasets import make_dataloader
 
-from bitrap.modeling.build import make_model
+from bitrap.modeling import make_model
 
 from bitrap.engine import build_engine
 from bitrap.utils.scheduler import ParamScheduler, sigmoid_anneal

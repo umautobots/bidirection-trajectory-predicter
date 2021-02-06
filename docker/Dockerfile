@@ -7,4 +7,4 @@ RUN apt-get update && \
 
 RUN pip install matplotlib tqdm yacs Pillow tensorboardx wandb
 
-
+RUN export PYTHONPATH=$PWD:PYTHONPATH

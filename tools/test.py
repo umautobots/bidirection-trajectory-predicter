@@ -1,10 +1,7 @@
 import pdb
 import os
 import sys
-sys.path.remove('/home/brianyao/Documents/stad-cvpr2020/SpatioTemporalAnomalyDetection')
 sys.path.remove('/home/brianyao/Documents/intention2021icra')
-sys.path.remove('/home/brianyao/Documents/maskrcnn-benchmark')
-sys.path.remove('/home/brianyao/Documents/sgan')
 sys.path.append(os.path.realpath('.'))
 import torch
 from torch import nn, optim

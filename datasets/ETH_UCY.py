@@ -7,11 +7,13 @@ TODO: convert to our own dataset format later
 import os
 import sys
 from .preprocessing import get_node_timestep_data
+sys.path.append(os.path.realpath('./datasets'))
 import numpy as np
 import torch
 from torch.utils import data
 import dill
 import json
+import pdb
 
 class ETHUCYDataset(data.Dataset):
     def __init__(self, cfg, split):
@@ -59,6 +61,27 @@ class ETHUCYDataset(data.Dataset):
                                         min_history_timesteps=min_history_timesteps,
                                         min_future_timesteps=hyperparams['prediction_horizon'],
                                         return_robot=False)
+        # get some statistics on the dataset.
+        all_obs_distance, all_obs_vel = [], []
+        all_pred_distance, all_pred_vel = [], []
+        for d in self.dataset:
+            distance = torch.norm(d[1][-1, :2] - d[1][0, :2])
+            all_obs_distance.append(distance)
+            all_obs_vel.append(d[1][:, 2:4])
+
+            distance = torch.norm(d[2][-1] - d[2][0])
+            all_pred_distance.append(distance)
+            all_pred_vel.append((d[2][1:] - d[2][:-1])/0.4)
+
+        all_obs_vel = torch.cat(all_obs_vel, dim=0).norm(dim=1)
+        all_obs_distance = torch.tensor(all_obs_distance)
+        all_pred_vel = torch.cat(all_pred_vel, dim=0).norm(dim=1)
+        all_pred_distance = torch.tensor(all_pred_distance)
+        
+        print("obs dist mu/sigma: {:.2f}/{:.2f}, obs vel mu/sigma: {:.2f}/{:.2f}, pred dist mu/sigma: {:.2f}/{:.2f}, pred vel mu/sigma: {:.2f}/{:.2f}".format(\
+                all_obs_distance.mean(), all_obs_distance.std(), all_obs_vel.mean(), all_obs_vel.std(),
+                all_pred_distance.mean(), all_pred_distance.std(), all_pred_vel.mean(), all_pred_vel.std()))
+        
     def __len__(self):
         return len(self.dataset)
     
@@ -101,7 +124,6 @@ class NodeTypeDataset(data.Dataset):
         self.index = self.index_env(node_freq_mult, scene_freq_mult, **kwargs)
         self.len = len(self.index)
         self.edge_types = [edge_type for edge_type in env.get_edge_types() if edge_type[0] is node_type]
-
     def index_env(self, node_freq_mult, scene_freq_mult, **kwargs):
         index = list()
         
