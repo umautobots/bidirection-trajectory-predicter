@@ -89,7 +89,7 @@ class JAAD(object):
         Return the default path where jaad_raw files are expected to be placed.
         :return: the default path to the dataset folder
         """
-        return 'dataset/jaad'
+        return '/data1/fjw/JAAD/JAAD/'
 
     def _get_video_ids_split(self, image_set, subset='default'):
         """

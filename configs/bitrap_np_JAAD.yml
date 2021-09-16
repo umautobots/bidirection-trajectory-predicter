@@ -1,6 +1,6 @@
 PROJECT: 'bitrap_np_jaad'
-CKPT_DIR: 'checkpoints/JAAD_checkpoints/goal_cvae_checkpoints/' 
-OUT_DIR: 'outputs/JAAD_outputs/goal_cvae_outputs'
+CKPT_DIR: '/data1/fjw/JAAD/JAAD/checkpoints/' 
+OUT_DIR: '/data1/fjw/JAAD/JAAD/outputs'
 DEVICE: 'cuda'
 METHOD: 'BiTraPNP'
 VISUALIZE: True
@@ -28,8 +28,8 @@ MODEL:
   DEC_OUTPUT_DIM: 4
 DATASET:
   NAME: 'JAAD'
-  ROOT: 'data/JAAD/'
-  TRAJECTORY_PATH: 'data/JAAD/trajectories/'
+  ROOT: '/data1/fjw/JAAD/JAAD/'
+  TRAJECTORY_PATH: '/data1/fjw/JAAD/JAAD/trajectories/'
   BBOX_TYPE: 'cxcywh' # bbox is in cxcywh format
   NORMALIZE: 'zero-one' 
   MIN_BBOX: [0,0,0,0] # the min of cxcywh or x1x2y1y2
