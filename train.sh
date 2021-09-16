@@ -1,0 +1,1 @@
+python tools/train.py --config_file ./configs/bitrap_np_JAAD.yml
